@@ -39,7 +39,7 @@ const StepsSection = () => {
             <div
               className="absolute inset-0 bg-cover bg-center z-0 rounded-xl filter transition-all duration-300 ease-in-out group-hover:blur-sm"
               style={{
-                backgroundImage: `url('/img/tratamento/TRIAGEM.jpg')`, // Imagem única
+                backgroundImage: `url('/img/tratamento/triagem.jpg')`, // Imagem única
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundColor: "rgba(37, 67, 55, 0.6)", // Transparência aplicada ao fundo
