@@ -1,14 +1,12 @@
 import { useRef, useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
-
 /* =========================
    HERO (título, subtítulo, CTA)
    ========================= */
 const HeroSection = () => {
   return (
     <section className="relative overflow-hidden text-white flex items-center justify-start font-livvic min-h-[90vh] md:min-h-[80svh]">
-      
       {/* BG Image */}
       <img
         src="/img/raiz2.jpg"
@@ -104,11 +102,12 @@ const EDMAescada = () => {
           </h2>
 
           <p className="text-gray-20 mb-6 text-sm sm:text-base leading-relaxed">
-            No Instituto EDMA, nossos pilares sustentam tudo o que fazemos. 
-            Educação para formar e informar, levando conhecimento que transforma. 
-            Descoberta para pesquisar e inovar, abrindo novos caminhos de esperança. 
-            Medicina Avançada para oferecer um cuidado humano, seguro e personalizado, 
-            unindo ciência e acolhimento em cada etapa da jornada.
+            No Instituto EDMA, nossos pilares sustentam tudo o que fazemos.
+            Educação para formar e informar, levando conhecimento que
+            transforma. Descoberta para pesquisar e inovar, abrindo novos
+            caminhos de esperança. Medicina Avançada para oferecer um cuidado
+            humano, seguro e personalizado, unindo ciência e acolhimento em cada
+            etapa da jornada.
           </p>
 
           {/* Lista vertical com letras atrás do início das palavras */}
@@ -160,7 +159,6 @@ const EDMAescada = () => {
               >
                 Descoberta
               </span>
-              
             </li>
 
             {/* MEDICINA (M) */}
@@ -255,7 +253,7 @@ const VideoSection = () => {
   const [isSeeking, setIsSeeking] = useState(false);
 
   // breakpoints
-  const [isWide, setIsWide] = useState(false);     // ≥1400px
+  const [isWide, setIsWide] = useState(false); // ≥1400px
   const [isMobile, setIsMobile] = useState(false); // <768px
 
   useEffect(() => {
@@ -312,8 +310,12 @@ const VideoSection = () => {
 
   const formatTime = (sec) => {
     if (!isFinite(sec)) return "00:00";
-    const m = Math.floor(sec / 60).toString().padStart(2, "0");
-    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    const m = Math.floor(sec / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = Math.floor(sec % 60)
+      .toString()
+      .padStart(2, "0");
     return `${m}:${s}`;
   };
 
@@ -344,11 +346,13 @@ const VideoSection = () => {
             alt="Thumb Vídeo"
             className="absolute inset-0 w-full h-full object-cover"
           />
-                      {/* Overlay para transparência */}
-            <div className="absolute inset-0 bg-black/50 pointer-events-none rounded-xl  blur-xl"></div>
+          {/* Overlay para transparência */}
+          <div className="absolute inset-0 bg-black/50 pointer-events-none rounded-xl  blur-xl"></div>
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-4">
-            <p className="text-1xl uppercase tracking-widest mb-0">Nossa missão e propósito</p>
+            <p className="text-1xl uppercase tracking-widest mb-0">
+              Nossa missão e propósito
+            </p>
             <h1 className="font-bold leading-snug mb-3">
               <span className="block text-[#a07e28] text-[clamp(20px,6vw,60px)]">
                 Assista Agora
@@ -515,7 +519,7 @@ const GruposCuidado = () => {
     <section
       className="py-16 px-4 sm:px-6 lg:px-8 relative"
       style={{
-        backgroundColor: "#111A17", 
+        backgroundColor: "#111A17",
         backgroundImage:
           "linear-gradient(rgba(29, 85, 63, 0.45), rgba(0, 0, 0, 0.35)), url('/img/textura.png')",
         backgroundSize: "cover",
@@ -526,7 +530,10 @@ const GruposCuidado = () => {
       <div className="max-w-7xl mx-auto">
         {/* Título e subtítulo */}
         <div className="text-center mb-12">
-          <p className="text-sm uppercase text-white/70 tracking-widest mb-4" style={{ color: "#F4F9F5" }}>
+          <p
+            className="text-sm uppercase text-white/70 tracking-widest mb-4"
+            style={{ color: "#F4F9F5" }}
+          >
             ATENÇÃO ESPECIAL PARA SUA SAÚDE
           </p>
           <h2
@@ -548,17 +555,18 @@ const GruposCuidado = () => {
                 transition-all duration-300
                 hover:-translate-y-1
                 hover:shadow-[0_12px_30px_-6px_rgba(16,185,129,.45)]
-                ${index === grupos.length - 1 ? 'col-span-full sm:col-span-2 lg:col-span-1' : ''}
+                ${
+                  index === grupos.length - 1
+                    ? "col-span-full sm:col-span-2 lg:col-span-1"
+                    : ""
+                }
               `}
             >
               <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-44 lg:h-44 flex items-center justify-center">
-                <img
-                  src={grupo.icone}
-                />
+                <img src={grupo.icone} />
               </div>
 
-              <figcaption className="mt-3 text-white/90 text-sm leading-tight">
-              </figcaption>
+              <figcaption className="mt-3 text-white/90 text-sm leading-tight"></figcaption>
             </figure>
           ))}
         </div>
@@ -566,7 +574,6 @@ const GruposCuidado = () => {
     </section>
   );
 };
-
 
 /* =========================
    ESPECIALISTAS — carrossel mantendo o mesmo layout
@@ -751,10 +758,10 @@ const Especialistas = () => {
 const Depoimentos = () => {
   const testimonials = [
     {
-      image: "/img/depoimentos/cli01.jpg",
-      name: "Ana Ribeiro",
-      role: "Paciente",
-      text: "Experiência excelente! Profissionais atenciosos, explicam tudo com clareza e acompanham de perto a evolução do tratamento.",
+      image: "/img/depoimentos/paula_ferraz.jpg",
+      name: "Paulla Ferraz",
+      role: "Mãe do Gael",
+      text: "Há 6 meses incluímos o tratamento com o canabidiol na rotina do Gael (tea, nível 2 de suporte e com grande dificuldade na fala) e de lá pra cá temos tido avanços significativos. Neste período, o Gael saiu da fralda, diminuiu drasticamente as ecolalias, melhorou (e muito) a alimentação, arriscou mais palavras e hoje está começando a ser alfabetizado, com o avanço da motricidade fina.      Não canso de agradecer a Dra Brunna Varela e Instituto EDMA por nos auxiliarem nesta jornada, sem eles nada disso seria possível!!! O canabidiol salva vidas e proporciona qualidade de vida aos seus pacientes. 💚",
     },
     {
       image: "/img/depoimentos/cli02.jpg",
@@ -937,7 +944,8 @@ const FAQSection = () => {
       title: "MEDICINAL",
       questions: [
         {
-          question: "Quais condições podem ser tratadas com cannabis medicinal?",
+          question:
+            "Quais condições podem ser tratadas com cannabis medicinal?",
           answer:
             "A cannabis pode auxiliar em casos de dor crônica, epilepsia, autismo, ansiedade, depressão, insônia, Parkinson, Alzheimer, fibromialgia, esclerose múltipla, entre outras. Cada caso é avaliado individualmente.",
         },
@@ -1102,7 +1110,9 @@ const FAQSection = () => {
                   <div className="faq-panel">
                     {item.questions.map((question, idx) => (
                       <div key={idx} className="mb-4">
-                        <p className="font-semibold text-[#daa520] text-lg">{question.question}</p>
+                        <p className="font-semibold text-[#daa520] text-lg">
+                          {question.question}
+                        </p>
                         <p className="text-lg">{question.answer}</p>
                       </div>
                     ))}
