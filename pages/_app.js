@@ -17,16 +17,16 @@ export default function MyApp({ Component, pageProps }) {
 
         <meta
           name="description"
-          content="A CIÊNCIA É NOSSA RAIZ E O CUIDADO NOSSO PROPÓSITO | Cuidamos de você de uma forma única e especial!"
+          content="Cuidamos de você de uma forma única e especial!"
         />
         <meta property="og:title" content="Instituto EDMA" />
         <meta
           property="og:description"
-          content="A CIÊNCIA É NOSSA RAIZ E O CUIDADO NOSSO PROPÓSITO | Cuidamos de você de uma forma única e especial!"
+          content="Cuidamos de você de uma forma única e especial!"
         />
         <meta
           property="og:image"
-          content="https://institutoedma.com.br/img/novas/logoverticalverde.svg"
+          content="https://institutoedma.com.br/img/novas/logoverticalverde.png"
         />
       </Head>
       <Component {...pageProps} />
