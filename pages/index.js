@@ -39,7 +39,7 @@ const HeroSection = () => {
         </p>
 
         <a
-          href="https://wa.me/555599582403?text=Olá! Gostaria de agendar uma consulta."
+          href="https://wa.me/554988625097?text=Olá! Gostaria de agendar uma consulta."
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 sm:mt-8 md:mt-0 inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-[#a07e28] text-white text-base sm:text-lg font-medium rounded-full hover:bg-[#d7b661] transition duration-300 shadow-lg"
@@ -242,19 +242,17 @@ const EDMAescada = () => {
    VÍDEO (thumbnail + player)
    ========================= */
 const VideoSection = () => {
-  const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  // breakpoints
+  const [isWide, setIsWide] = useState(false);   // ≥1400px
+  const [isMobile, setIsMobile] = useState(false); // <768px
+
+  // controla capa → player YouTube
   const [showVideo, setShowVideo] = useState(false);
 
-  // tempo
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isSeeking, setIsSeeking] = useState(false);
-
-  // breakpoints
-  const [isWide, setIsWide] = useState(false); // ≥1400px
-  const [isMobile, setIsMobile] = useState(false); // <768px
+  // ID e parâmetros do YouTube
+  const YT_ID = "uihfoL6RcA8";
+  // autoplay=1 inicia ao clicar na capa; mute=0 (som ligado) — se quiser iniciar mudo no mobile, troque para mute=1
+  const ytParams = "autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1";
 
   useEffect(() => {
     const onResize = () => {
@@ -266,76 +264,12 @@ const VideoSection = () => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const playVideo = () => {
-    const el = videoRef.current;
-    if (el) {
-      el.play();
-      setIsPlaying(true);
-    }
-  };
-  const pauseVideo = () => {
-    const el = videoRef.current;
-    if (el) {
-      el.pause();
-      setIsPlaying(false);
-    }
-  };
-  const toggleMute = () => {
-    const el = videoRef.current;
-    if (!el) return;
-    el.muted = !el.muted;
-    setIsMuted(el.muted);
-  };
-  const handlePlayClick = () => {
-    setShowVideo(true);
-    setTimeout(() => {
-      const el = videoRef.current;
-      if (el) {
-        el.muted = false;
-        setIsMuted(false);
-        playVideo();
-      }
-    }, 100);
-  };
-
-  const onLoadedMetadata = () => {
-    const el = videoRef.current;
-    if (el && !Number.isNaN(el.duration)) setDuration(el.duration);
-  };
-  const onTimeUpdate = () => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (!isSeeking) setCurrentTime(el.currentTime);
-  };
-
-  const formatTime = (sec) => {
-    if (!isFinite(sec)) return "00:00";
-    const m = Math.floor(sec / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = Math.floor(sec % 60)
-      .toString()
-      .padStart(2, "0");
-    return `${m}:${s}`;
-  };
-
-  const handleSeekChange = (e) => {
-    setIsSeeking(true);
-    setCurrentTime(Number(e.target.value));
-  };
-  const handleSeekCommit = (e) => {
-    const el = videoRef.current;
-    if (!el) return;
-    const val = Number(e.target.value);
-    el.currentTime = val;
-    setCurrentTime(val);
-    setIsSeeking(false);
-  };
+  const handlePlayClick = () => setShowVideo(true);
 
   return (
     <section className="relative w-full overflow-hidden">
       {!showVideo ? (
-        // THUMB / CAPA (continua tela cheia no mobile)
+        // CAPA (thumb personalizada) — igual à sua, com botão pulando
         <div
           className="relative w-full cursor-pointer"
           style={{ height: isWide ? "85vh" : "100svh" }}
@@ -346,9 +280,11 @@ const VideoSection = () => {
             alt="Thumb Vídeo"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Overlay para transparência */}
-          <div className="absolute inset-0 bg-black/50 pointer-events-none rounded-xl  blur-xl"></div>
+          {/* Overlays */}
+          <div className="absolute inset-0 bg-black/50 pointer-events-none rounded-xl blur-xl"></div>
           <div className="absolute inset-0 bg-black/40" />
+
+          {/* Conteúdo da capa */}
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-4">
             <p className="text-1xl uppercase tracking-widest mb-0">
               Nossa missão e propósito
@@ -362,7 +298,7 @@ const VideoSection = () => {
               Conheça um pouco mais sobre nosso trabalho e valores
             </p>
 
-            {/* Play */}
+            {/* Botão Play (pulando) */}
             <div className="flex justify-center items-center w-full">
               <div className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-[#254337] to-[#111A17] p-[3px] group motion-safe:animate-bounce">
                 <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#728979] group-hover:bg-transparent transition-all duration-300">
@@ -383,115 +319,29 @@ const VideoSection = () => {
           </div>
         </div>
       ) : (
-        // VÍDEO
+        // PLAYER YOUTUBE (com controles nativos)
         <div
-          className="relative w-full group"
+          className="relative w-full"
           style={{
-            // Desktop largo = 85vh; telas menores = altura automática com 16:9
             height: isWide ? "85vh" : "auto",
-            // reserva espaço no mobile pra evitar layout shift
             aspectRatio: isWide ? undefined : "16 / 9",
           }}
         >
-          <video
-            ref={videoRef}
-            src="/videos/EdmaBrunaComLettering.mp4"
-            onClick={() => (isPlaying ? pauseVideo() : playVideo())}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onLoadedMetadata={onLoadedMetadata}
-            onTimeUpdate={onTimeUpdate}
-            style={{
-              width: "100%",
-              height: isWide ? "100%" : "auto",
-              objectFit: isWide ? "cover" : "contain", // << chave: mobile ajusta, desktop cobre
-              display: "block",
-              backgroundColor: "black", // barras laterais/verticais discretas quando 'contain'
-            }}
-            muted={isMuted}
-            playsInline
-            preload="metadata"
+          <iframe
+            src={`https://www.youtube.com/embed/${YT_ID}?${ytParams}`}
+            title="Vídeo"
+            className="w-full h-full block"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
           />
-
-          {/* Overlay PLAY quando pausado */}
-          {!isPlaying && (
-            <button
-              onClick={playVideo}
-              aria-label="Reproduzir vídeo"
-              className="absolute inset-0 z-20 flex items-center justify-center focus:outline-none"
-            >
-              <div className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-green-400 to-blue-600 p-[3px] motion-safe:animate-bounce">
-                <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white transition-all duration-300">
-                  <div
-                    className="ml-1"
-                    style={{
-                      width: 0,
-                      height: 0,
-                      borderLeft: "14px solid #333",
-                      borderTop: "9px solid transparent",
-                      borderBottom: "9px solid transparent",
-                    }}
-                  />
-                </div>
-                <span className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400 to-blue-600 opacity-20 blur-xl scale-125"></span>
-              </div>
-            </button>
-          )}
-
-          {/* Controles */}
-          <div
-            className="
-              absolute inset-x-0 bottom-0 z-30
-              p-3 sm:p-4
-              bg-gradient-to-t from-black/55 to-transparent
-              opacity-100 md:opacity-0 md:group-hover:opacity-100
-              transition-opacity duration-300
-            "
-          >
-            <input
-              type="range"
-              min={0}
-              max={Number.isFinite(duration) ? Math.floor(duration) : 0}
-              step={1}
-              value={currentTime}
-              onChange={handleSeekChange}
-              onMouseUp={handleSeekCommit}
-              onTouchEnd={handleSeekCommit}
-              className="
-                w-full h-2
-                [&::-webkit-slider-thumb]:appearance-none
-                [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
-                [&::-webkit-slider-thumb]:rounded-full
-                [&::-webkit-slider-thumb]:bg-white
-                [&::-webkit-slider-runnable-track]:h-2
-                [&::-webkit-slider-runnable-track]:rounded-full
-                [&::-webkit-slider-runnable-track]:bg-white/30
-                accent-green-500
-                cursor-pointer
-              "
-              aria-label="Barra de tempo do vídeo"
-            />
-
-            <div className="mt-2 flex items-center justify-between text-[11px] sm:text-xs text-white/90">
-              <span>{formatTime(currentTime)}</span>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={toggleMute}
-                  className="px-2 py-1 rounded bg-white/10 hover:bg-white/20 transition"
-                  aria-label={isMuted ? "Desmutar vídeo" : "Mutar vídeo"}
-                  title={isMuted ? "Desmutar vídeo" : "Mutar vídeo"}
-                >
-                  {isMuted ? "🔇" : "🔊"}
-                </button>
-                <span>{formatTime(duration)}</span>
-              </div>
-            </div>
-          </div>
         </div>
       )}
     </section>
   );
 };
+
 
 /* =========================
    GRUPOS DE CUIDADO
