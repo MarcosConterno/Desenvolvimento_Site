@@ -17,15 +17,12 @@ export default function MyApp({ Component, pageProps }) {
 
         <meta
           name="description"
-          content="Instituto EDMA"
+          content="A CIÊNCIA É NOSSA RAIZ E O CUIDADO NOSSO PROPÓSITO | Cuidamos de você de uma forma única e especial!"
         />
-        <meta
-          property="og:title"
-          content="short title of your website/webpage"
-        />
+        <meta property="og:title" content="Instituto EDMA" />
         <meta
           property="og:description"
-          content="Instituto EDMA"
+          content="A CIÊNCIA É NOSSA RAIZ E O CUIDADO NOSSO PROPÓSITO | Cuidamos de você de uma forma única e especial!"
         />
         <meta
           property="og:image"
