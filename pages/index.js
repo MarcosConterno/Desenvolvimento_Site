@@ -611,19 +611,22 @@ const Depoimentos = () => {
       image: "/img/depoimentos/paula_ferraz.jpg",
       name: "Paulla Ferraz",
       role: "Mãe do Gael",
-      text: "Há 6 meses incluímos o tratamento com o canabidiol na rotina do Gael (tea, nível 2 de suporte e com grande dificuldade na fala) e de lá pra cá temos tido avanços significativos. Neste período, o Gael saiu da fralda, diminuiu drasticamente as ecolalias, melhorou (e muito) a alimentação, arriscou mais palavras e hoje está começando a ser alfabetizado, com o avanço da motricidade fina.      Não canso de agradecer a Dra Brunna Varela e Instituto EDMA por nos auxiliarem nesta jornada, sem eles nada disso seria possível!!! O canabidiol salva vidas e proporciona qualidade de vida aos seus pacientes. 💚",
+      text:
+        "Há 6 meses incluímos o tratamento com o canabidiol na rotina do Gael (tea, nível 2 de suporte e com grande dificuldade na fala) e de lá pra cá temos tido avanços significativos. Neste período, o Gael saiu da fralda, diminuiu drasticamente as ecolalias, melhorou (e muito) a alimentação, arriscou mais palavras e hoje está começando a ser alfabetizado, com o avanço da motricidade fina. Não canso de agradecer a Dra Brunna Varela e Instituto EDMA por nos auxiliarem nesta jornada, sem eles nada disso seria possível!!! O canabidiol salva vidas e proporciona qualidade de vida aos seus pacientes. 💚",
     },
     {
       image: "/img/depoimentos/cli02.jpg",
       name: "Marcos Lima",
       role: "Paciente",
-      text: "O cuidado individual fez toda diferença. Recomendo a todos que buscam um tratamento sério e baseado em evidências.",
+      text:
+        "O cuidado individual fez toda diferença. Recomendo a todos que buscam um tratamento sério e baseado em evidências.",
     },
     {
       image: "/img/depoimentos/cli03.jpg",
       name: "Luciana Prado",
       role: "Responsável",
-      text: "A equipe é muito humana. O acompanhamento contínuo trouxe segurança para nossa família durante todo o processo.",
+      text:
+        "A equipe é muito humana. O acompanhamento contínuo trouxe segurança para nossa família durante todo o processo.",
     },
   ];
 
@@ -635,75 +638,66 @@ const Depoimentos = () => {
 
   return (
     <section
-      className="relative overflow-hidden py-20 px-4"
+      className="relative overflow-hidden py-16 px-4 sm:py-20"
       style={{
-        // Cor + textura por cima (com alpha na cor)
         backgroundImage:
-          "linear-gradient(rgba(70, 110, 69, 0.44), rgba(6, 10, 8, 0.38)), url('/img/textura.png')",
+          "linear-gradient(rgba(70,110,69,0.44), rgba(6,10,8,0.38)), url('/img/textura.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        backgroundColor: "#111", // fallback (atrás da textura)
+        backgroundColor: "#111",
       }}
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Títulos */}
-        <div className="text-center mb-16">
-          <p className="text-sm font-light text-white uppercase tracking-widest mb-3">
+        <div className="text-center mb-12 sm:mb-16">
+          <p className="text-xs sm:text-sm font-light text-white uppercase tracking-widest mb-2 sm:mb-3">
             NOSSOS DEPOIMENTOS
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white font-livvic leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-livvic leading-tight">
             O QUE NOSSOS CLIENTES ESTÃO DIZENDO
           </h2>
         </div>
 
         {/* Carousel */}
         <div className="relative max-w-5xl mx-auto">
-          {/* Setas mais afastadas */}
+          {/* Setas: escondidas no mobile para não sobrepor o texto */}
           <button
             onClick={prevTestimonial}
             aria-label="Anterior"
-            className="absolute -left-10 md:-left-12 lg:-left-14 top-1/2 -translate-y-1/2 z-30 text-white hover:text-white/80 transition-colors"
+            className="hidden md:block absolute -left-12 lg:-left-14 top-1/2 -translate-y-1/2 z-30 text-white hover:text-white/80 transition-colors"
           >
             <svg
-              className="w-9 h-9 md:w-10 md:h-10"
+              className="w-10 h-10"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             onClick={nextTestimonial}
             aria-label="Próximo"
-            className="absolute -right-10 md:-right-12 lg:-right-14 top-1/2 -translate-y-1/2 z-30 text-white hover:text-white/80 transition-colors"
+            className="hidden md:block absolute -right-12 lg:-right-14 top-1/2 -translate-y-1/2 z-30 text-white hover:text-white/80 transition-colors"
           >
             <svg
-              className="w-9 h-9 md:w-10 md:h-10"
+              className="w-10 h-10"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
           {/* Slide */}
-          <div className="h-80 flex flex-col lg:flex-row items-center justify-center gap-12 px-8 md:px-12 lg:px-16">
-            {/* Foto — tamanho anterior */}
+          <div className="h-auto lg:h-80 flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-12 px-2 sm:px-8 md:px-12 lg:px-16">
+            {/* Foto */}
             <div className="flex-shrink-0">
-              <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl">
+              <div className="w-28 h-28 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl ring-1 ring-white/10">
                 <img
                   src={testimonials[current].image}
                   alt={testimonials[current].name}
@@ -714,17 +708,27 @@ const Depoimentos = () => {
             </div>
 
             {/* Texto */}
-            <div className="flex-1 max-w-3xl flex flex-col justify-center h-full">
-              <div className="flex-1 flex items-center mb-6">
-                <p className="text-lg sm:text-xl text-white leading-relaxed font-livvic text-left">
+            <div className="flex-1 max-w-3xl flex flex-col justify-center w-full">
+              {/* No mobile, se o texto for muito grande, limita a altura e permite rolar.
+                  Em telas ≥ md, remove o limite (sem rolagem). */}
+              <div className="flex-1 flex items-start mb-4 sm:mb-6">
+                <p
+                  className="
+                    text-base sm:text-lg md:text-xl
+                    text-white leading-relaxed sm:leading-loose
+                    font-livvic text-left break-words
+                    max-h-60 overflow-y-auto pr-2
+                    md:max-h-none md:overflow-visible md:pr-0
+                  "
+                >
                   {testimonials[current].text}
                 </p>
               </div>
               <div className="text-left">
-                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 font-livvic">
+                <h4 className="text-lg sm:text-2xl font-bold text-white mb-0.5 sm:mb-1 font-livvic">
                   {testimonials[current].name}
                 </h4>
-                <p className="text-white/70 font-light text-base sm:text-lg">
+                <p className="text-white/70 font-light text-sm sm:text-lg">
                   {testimonials[current].role}
                 </p>
               </div>
@@ -732,13 +736,13 @@ const Depoimentos = () => {
           </div>
 
           {/* Indicadores */}
-          <div className="flex justify-center space-x-3 mt-12">
+          <div className="flex justify-center space-x-2 sm:space-x-3 mt-8 sm:mt-12">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrent(index)}
                 aria-label={`Ir para depoimento ${index + 1}`}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-colors ${
                   index === current ? "bg-white" : "bg-white/40"
                 }`}
               />
@@ -749,7 +753,6 @@ const Depoimentos = () => {
     </section>
   );
 };
-
 /* =========================
    FAQ
    ========================= */
