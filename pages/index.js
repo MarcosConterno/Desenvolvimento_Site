@@ -11,7 +11,7 @@ const services = [
     description:
       "Uma avaliação profissional que considera seu histórico, suas necessidades e possíveis caminhos de cuidado.",
     label: "Saiba como funciona",
-    href: "/tratamento",
+    href: "#como-funciona",
     tone: "primary",
     icon: (
       <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -25,8 +25,6 @@ const services = [
     title: "Acompanhamento do tratamento",
     description:
       "Orientação e acompanhamento para reavaliar a evolução e conversar sobre os próximos passos.",
-    label: "Conheça a jornada",
-    href: "#como-funciona",
     tone: "",
     icon: (
       <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -40,8 +38,8 @@ const services = [
     title: "Orientação sobre cannabis medicinal",
     description:
       "Informação responsável sobre avaliação profissional, possibilidades terapêuticas e caminhos de acesso previstos nas regras vigentes.",
-    label: "Tire suas dúvidas",
-    href: "#duvidas",
+    label: "Acesse o Blog EDMA",
+    href: "/blog",
     tone: "featured",
     icon: (
       <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -63,13 +61,19 @@ const steps = [
     number: "02.",
     title: "Avaliação com profissional habilitado",
     description:
-      "Seu histórico de saúde é considerado para avaliar alternativas de cuidado e eventuais indicações.",
+      "Ouvimos sua história, seus sintomas e expectativas. Na consulta, um profissional habilitado avalia suas necessidades, alternativas de cuidado e possíveis indicações.",
   },
   {
     number: "03.",
     title: "Orientação e acompanhamento",
     description:
-      "Quando indicado, o plano é individualizado e pode incluir orientação sobre acesso regulamentado e acompanhamento clínico.",
+      "Quando indicado, acompanhamos sua evolução e conversamos sobre os próximos passos. A necessidade e a frequência dos retornos são definidas para cada situação.",
+  },
+  {
+    number: "04.",
+    title: "Acesso aos produtos",
+    description:
+      "Se houver indicação, orientamos sobre a documentação e os caminhos de acesso aplicáveis, de acordo com a prescrição profissional e as regras vigentes.",
   },
 ];
 
@@ -141,19 +145,7 @@ function HomeHero() {
             </p>
           </div>
         </div>
-        <div className="hero-panel" aria-label="Cuidado em saúde com equipe e acompanhamento">
-          <Image
-            src="/img/img_v2/consulta_img1.png"
-            alt="Médica conversa com uma paciente durante uma consulta"
-            width={1448}
-            height={1086}
-            priority
-            quality={100}
-            sizes="(max-width: 800px) 90vw, 45vw"
-            className="hero-photo"
-          />
-          <span className="hero-panel-note">Ciência • Cuidado • Pessoas</span>
-        </div>
+        <MissionVideo className="hero-panel about-video home-video" />
       </div>
     </section>
   );
@@ -193,7 +185,11 @@ function Services() {
               </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
-              <a className="service-link" href={service.href}>{service.label}<Arrow /></a>
+              {service.href && (
+                <a className="service-link" href={service.href}>
+                  {service.label}<Arrow />
+                </a>
+              )}
             </article>
           ))}
         </div>
@@ -255,12 +251,12 @@ function About() {
           <blockquote className="about-quote">“Mais do que oferecer respostas, queremos abrir caminhos para cuidar melhor.”</blockquote>
           <a className="btn btn-outline" href="/sobrenos">Conheça o instituto <Arrow /></a>
         </div>
-        <div className="about-art">
+        <div className="about-art about-image">
           <Image
-            src="/img/quemsomos.jpg"
-            alt="Paciente idosa conversa com uma profissional de saúde em um momento de cuidado"
-            width={6016}
-            height={4016}
+            src="/img/img_v2/consulta_img1.png"
+            alt="Médica conversa com uma paciente durante uma consulta"
+            width={1448}
+            height={1086}
             quality={100}
             sizes="(max-width: 800px) 90vw, 42vw"
             className="about-photo"
@@ -268,6 +264,54 @@ function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+function MissionVideo({ className }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <div className={`${className}${isPlaying ? " is-playing" : ""}`}>
+      {isPlaying ? (
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/uihfoL6RcA8?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1"
+          title="Nossa missão e propósito — Instituto EDMA"
+          allow="autoplay; encrypted-media; picture-in-picture; web-share"
+          allowFullScreen
+          loading="eager"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      ) : (
+        <button
+          className="about-video__cover"
+          type="button"
+          onClick={() => setIsPlaying(true)}
+          aria-label="Assistir ao vídeo sobre a missão e o propósito do Instituto EDMA"
+        >
+          <Image
+            src="/img/bkg_video.png"
+            alt=""
+            fill
+            quality={100}
+            sizes="(max-width: 520px) 570px, (max-width: 800px) 800px, 850px"
+            className="about-video__poster"
+          />
+          <span className="about-video__shade" aria-hidden="true" />
+          <span className="about-video__content" aria-hidden="true">
+            <span className="about-video__eyebrow">Nossa missão e propósito</span>
+            <span className="about-video__title">Conheça o Instituto EDMA</span>
+            <span className="about-video__caption">
+              Um pouco mais sobre nosso trabalho e valores
+            </span>
+          </span>
+          <span className="about-video__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M9 6.8v10.4L17 12 9 6.8Z" fill="currentColor" />
+            </svg>
+          </span>
+        </button>
+      )}
+    </div>
   );
 }
 

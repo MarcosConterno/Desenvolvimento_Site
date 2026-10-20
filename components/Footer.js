@@ -33,7 +33,6 @@ const Footer = () => {
         <div>
           <h2>Instituto</h2>
           <Link href="/sobrenos">Sobre o EDMA</Link>
-          <Link href="/tratamento">Etapas do tratamento</Link>
           <Link href="/carta">Carta da fundadora</Link>
           <Link href="/associese">Associe-se</Link>
         </div>

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const navItems = [
-  { name: "Home", href: "#inicio", page: "/" },
-  { name: "Tratamentos", href: "/tratamento", page: "/tratamento" },
+  { name: "Home", href: "#inicio", page: "/", section: "inicio" },
+  { name: "Sua jornada", href: "#como-funciona", page: "/", section: "como-funciona" },
   { name: "Sobre nós", href: "/sobrenos", page: "/sobrenos" },
-  { name: "Carta", href: "/carta", page: "/carta" },
+  { name: "Blog EDMA", href: "/blog", page: "/blog" },
 ];
 
 export default function Header() {
@@ -46,12 +46,15 @@ export default function Header() {
           aria-label="Navegação principal"
         >
           {navItems.map((item) => {
-            const isCurrentPage = router.pathname === item.page;
-            const href = item.page === "/" && router.pathname !== "/" ? "/#inicio" : item.href;
+            const isCurrentPage =
+              router.pathname === item.page && (item.page !== "/" || item.section === "inicio");
+            const href = item.page === "/" && router.pathname !== "/"
+              ? `/#${item.section}`
+              : item.href;
 
             return (
               <Link
-                key={item.page}
+                key={item.name}
                 href={href}
                 onClick={closeMobileMenu}
                 aria-current={isCurrentPage ? "page" : undefined}

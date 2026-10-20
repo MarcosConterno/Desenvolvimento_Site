@@ -1,8 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
+import CartaModal from "../components/CartaModal";
 
-const SobreNos = () => (
-  <div className="subpage about-page">
+const SobreNos = () => {
+  const [isCartaOpen, setIsCartaOpen] = useState(false);
+
+  return (
+    <div className="subpage about-page">
     <section className="subpage-hero about-purpose" aria-labelledby="about-title">
       <div className="subpage-wrap about-purpose__grid">
         <div className="about-purpose__copy">
@@ -40,7 +44,7 @@ const SobreNos = () => (
             src="/img/quemsomos.jpg"
             alt="Profissional de saúde acolhendo uma paciente durante uma conversa."
             fill
-            sizes="(max-width: 560px) calc(100vw - 38px), (max-width: 800px) calc(100vw - 50px), (max-width: 1100px) 45vw, 565px"
+            sizes="(max-width: 560px) calc(111vw - 42px), (max-width: 800px) calc(111vw - 56px), min(980px, 75vw)"
             quality={100}
             priority
           />
@@ -53,10 +57,16 @@ const SobreNos = () => (
         <h2 id="about-letter-title">
           Uma carta da nossa <em>fundadora.</em>
         </h2>
-        <Link className="btn btn-light" href="/carta" target="_blank" rel="noopener noreferrer">
+        <button
+          className="btn btn-light"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="founder-letter-dialog"
+          onClick={() => setIsCartaOpen(true)}
+        >
           <span>Leia a Carta de Brunna Varela</span>
           <span className="btn-arrow" aria-hidden="true">↗</span>
-        </Link>
+        </button>
       </div>
     </section>
 
@@ -115,7 +125,10 @@ const SobreNos = () => (
         </div>
       </div>
     </section>
-  </div>
-);
+
+    <CartaModal open={isCartaOpen} onClose={() => setIsCartaOpen(false)} />
+    </div>
+  );
+};
 
 export default SobreNos;
