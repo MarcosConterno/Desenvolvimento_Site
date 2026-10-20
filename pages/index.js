@@ -1,998 +1,339 @@
-import { useRef, useEffect, useState } from "react";
-import { FaWhatsapp } from "react-icons/fa";
+import { useState } from "react";
+import Image from "next/image";
 
-/* =========================
-   HERO (título, subtítulo, CTA)
-   ========================= */
-const HeroSection = () => {
+const whatsappUrl =
+  "https://wa.me/554988625097?text=Ol%C3%A1%21%20Gostaria%20de%20agendar%20uma%20consulta.";
+
+const services = [
+  {
+    number: "01 / ATENDIMENTO",
+    title: "Consulta médica individualizada",
+    description:
+      "Uma avaliação profissional que considera seu histórico, suas necessidades e possíveis caminhos de cuidado.",
+    label: "Saiba como funciona",
+    href: "/tratamento",
+    tone: "primary",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="10" r="4" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M7 27v-3.2a9 9 0 0 1 18 0V27M12 20l4 3 4-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    number: "02 / CONTINUIDADE",
+    title: "Acompanhamento do tratamento",
+    description:
+      "Orientação e acompanhamento para reavaliar a evolução e conversar sobre os próximos passos.",
+    label: "Conheça a jornada",
+    href: "#como-funciona",
+    tone: "",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M6 25V8m0 17h21M10 21l5-6 4 3 7-9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M21 9h5v5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    number: "03 / CONHECIMENTO",
+    title: "Orientação sobre cannabis medicinal",
+    description:
+      "Informação responsável sobre avaliação profissional, possibilidades terapêuticas e caminhos de acesso previstos nas regras vigentes.",
+    label: "Tire suas dúvidas",
+    href: "#duvidas",
+    tone: "featured",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 27V12m0 9c-6 0-9-3-9-8 5 0 9 3 9 8Zm0-5c0-5 3-8 8-8 0 5-3 8-8 8Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M11 27h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+];
+
+const steps = [
+  {
+    number: "01.",
+    title: "Primeiro contato",
+    description:
+      "Conheça os atendimentos disponíveis e escolha o melhor próximo passo para sua necessidade.",
+  },
+  {
+    number: "02.",
+    title: "Avaliação com profissional habilitado",
+    description:
+      "Seu histórico de saúde é considerado para avaliar alternativas de cuidado e eventuais indicações.",
+  },
+  {
+    number: "03.",
+    title: "Orientação e acompanhamento",
+    description:
+      "Quando indicado, o plano é individualizado e pode incluir orientação sobre acesso regulamentado e acompanhamento clínico.",
+  },
+];
+
+const questions = [
+  {
+    question: "Preciso de uma consulta antes de iniciar um tratamento?",
+    answer:
+      "Sim. A avaliação de um profissional habilitado permite conversar sobre seu histórico, possibilidades de cuidado, riscos e benefícios antes de definir uma conduta individualizada.",
+  },
+  {
+    question: "Cannabis medicinal é indicada para todas as pessoas?",
+    answer:
+      "Não. A possibilidade de uso depende da situação de saúde, dos tratamentos já realizados, da avaliação profissional e das evidências disponíveis para cada caso.",
+  },
+  {
+    question: "Como funciona o acesso aos produtos de cannabis?",
+    answer:
+      "As regras variam conforme o produto e a forma de acesso. Para importação de produto derivado de Cannabis para tratamento da própria saúde, a Anvisa informa que é necessária prescrição de profissional legalmente habilitado. Consulte as orientações oficiais antes de qualquer decisão.",
+    link: "https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/controlados/cannabis",
+    linkLabel: "Orientações oficiais da Anvisa",
+  },
+  {
+    question: "O acompanhamento continua após a primeira consulta?",
+    answer:
+      "A necessidade e a frequência do acompanhamento são definidas com o profissional responsável, de acordo com cada situação.",
+  },
+];
+
+function Arrow() {
+  return <span className="btn-arrow" aria-hidden="true">↗</span>;
+}
+
+function HomeHero() {
   return (
-    <section className="relative overflow-hidden text-white flex items-center justify-start font-livvic min-h-[90vh] md:min-h-[80svh]">
-      {/* BG Image */}
-      <img
-        src="/img/raiz2.jpg"
-        alt=""
-        className="
-          absolute inset-0 w-full h-full
-          object-cover
-          object-[center_32%]
-          md:object-center
-          pointer-events-none select-none
-        "
-        loading="eager"
-      />
-
-      {/* Overlay para transparência */}
-      <div className="absolute inset-0 bg-black/30 pointer-events-none"></div>
-      {/* bg-black/40 = preto com 40% de opacidade. 
-          Pode ajustar para bg-black/20, bg-black/50 ou usar outra cor como bg-white/30 */}
-
-      {/* Conteúdo */}
-      <div className="relative text-left px-6 sm:px-10 md:px-16 py-12 max-w-6xl md:ml-8 z-10">
-        <h1 className="font-bold leading-tight mb-6 text-2xl sm:text-2xl md:text-5xl">
-          <span className="text-[#F4F9F5]">A CIÊNCIA É NOSSA RAIZ</span>
-          <br />
-          <span className="text-[#a07e28]">E O CUIDADO NOSSO PROPÓSITO</span>
-        </h1>
-
-        <p className="mb-8 text-[#F4F9F5] leading-relaxed text-base sm:text-lg md:text-xl">
-          Cuidamos de você de uma forma única e especial!
-        </p>
-
-        <a
-          href="https://wa.me/554988625097?text=Olá! Gostaria de agendar uma consulta."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 sm:mt-8 md:mt-0 inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-[#a07e28] text-white text-base sm:text-lg font-medium rounded-full hover:bg-[#d7b661] transition duration-300 shadow-lg"
-        >
-          <FaWhatsapp className="text-xl sm:text-2xl" />
-          AGENDAR CONSULTA
-        </a>
-      </div>
-    </section>
-  );
-};
-
-/* =========================
-   PILARES (EDMA em coluna)
-   ========================= */
-const EDMAescada = () => {
-  const letterColor = "#FFFFFF22"; // intensidade da letra de fundo
-  const sizeClamp = "clamp(3rem, 12vw, 4.5rem)";
-  const leftDClamp = "clamp(2.5rem, 10vw, 5rem)";
-  const leftAClamp = "clamp(2.75rem, 10vw, 5rem)";
-  const mlDClamp = "clamp(2.5rem, 10vw, 5rem)";
-  const mlAClamp = "clamp(2.75rem, 10vw, 4rem)";
-
-  return (
-    <section
-      className=" relative w-full bg-[#111A17]
-                  py-12 sm:py-16        /* mantém o top */
-                  pb-4  sm:pb-6 md:pb-8 /* ↓ reduz só a parte de baixo */
-                  px-4 sm:px-10 md:px-16 font-livvic"
-      style={{
-        // 👇 Cor com alpha por cima + imagem ao fundo
-        backgroundImage:
-          "linear-gradient(rgba(0, 0, 0, 0.35), rgba(29, 85, 63, 0.45)), url('/img/textura.PNG')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row md:items-start gap-8 sm:gap-10 md:gap-20">
-        {/* Imagem à esquerda */}
-        <div className="md:w-1/2 flex justify-center md:justify-start">
-          <div className="relative w-[92%] sm:w-[85%] md:w-full mx-auto aspect-[5/4] sm:aspect-[16/11] md:aspect-auto md:h-[480px]">
-            <img
-              src="/img/imgs_home.png"
-              alt="Descrição da imagem"
-              className="absolute inset-0 w-full h-full object-contain"
-              loading="lazy"
-            />
+    <section className="hero" id="inicio" aria-labelledby="home-title">
+      <div className="wrap hero-grid">
+        <div className="hero-copy">
+          <div className="kicker">Saúde integrativa &amp; medicina avançada</div>
+          <h1 id="home-title">
+            Ciência que <em>acolhe.</em>
+            <br />
+            Cuidado que
+            <br />
+            transforma.
+          </h1>
+          <p className="hero-description">
+            Acreditamos em um cuidado que começa pela escuta. Conheça um espaço
+            dedicado à orientação profissional, ao conhecimento e ao
+            acompanhamento individualizado em saúde.
+          </p>
+          <div className="hero-actions">
+            <a className="btn btn-dark" href={whatsappUrl} target="_blank" rel="noreferrer">
+              Quero agendar uma consulta <Arrow />
+            </a>
+            <a className="ghost-link" href="#como-funciona">
+              <span>Entenda como funciona</span> <Arrow />
+            </a>
+          </div>
+          <div className="hero-foot">
+            <span className="hero-foot-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 3.8 14 9l5.2 2-5.2 2-2 5.2L10 13l-5.2-2L10 9l2-5.2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <p>
+              <strong>Uma jornada única para cada pessoa.</strong>
+              <br />
+              Avaliação profissional e decisões individualizadas.
+            </p>
           </div>
         </div>
-
-        {/* Texto à direita */}
-        <div className="md:w-1/2 max-w-xl text-left text-white">
-          <p className="text-[11px] sm:text-xs uppercase text-[#f4f9f5] tracking-[0.2em] mb-2">
-            NOSSOS PILARES
-          </p>
-
-          <h2 className="font-bold text-[#a07e28] mb-3 text-2xl sm:text-3xl md:text-4xl">
-            Estamos revolucionando a saúde
-          </h2>
-
-          <p className="text-gray-20 mb-6 text-sm sm:text-base leading-relaxed">
-            No Instituto EDMA, nossos pilares sustentam tudo o que fazemos.
-            Educação para formar e informar, levando conhecimento que
-            transforma. Descoberta para pesquisar e inovar, abrindo novos
-            caminhos de esperança. Medicina Avançada para oferecer um cuidado
-            humano, seguro e personalizado, unindo ciência e acolhimento em cada
-            etapa da jornada.
-          </p>
-
-          {/* Lista vertical com letras atrás do início das palavras */}
-          <ul className="relative space-y-3 sm:space-y-4 md:space-y-5">
-            {/* EDUCAÇÃO (E) */}
-            <li className="relative isolate flex items-center overflow-visible min-h-[56px] sm:min-h-[64px] md:min-h-[72px]">
-              <span
-                aria-hidden="true"
-                className="absolute z-0 pointer-events-none select-none animate-edma-soft"
-                style={{
-                  width: "4.5rem",
-                  height: "4.5rem",
-                  top: "50%",
-                  left: "0",
-                  transform: "translateY(-50%)",
-                  backgroundColor: "#FFFFFF22",
-                  WebkitMask:
-                    "url(/img/edma.svg/E.svg) no-repeat center / contain",
-                  mask: "url(/img/edma.svg/E.svg) no-repeat center / contain",
-                  animationDelay: "0s",
-                }}
-              />
-              <span className="relative z-10 text-lg sm:text-xl md:text-2xl font-bold leading-none ml-0 animate-typing">
-                Educação
-              </span>
-            </li>
-
-            {/* DESCOBERTA (D) */}
-            <li className="relative isolate flex items-center overflow-visible min-h-[56px] sm:min-h-[64px] md:min-h-[20px]">
-              <span
-                aria-hidden="true"
-                className="absolute z-0 pointer-events-none select-none animate-edma-soft"
-                style={{
-                  width: "4.5rem",
-                  height: "4.5rem",
-                  top: "50%",
-                  left: "5rem",
-                  transform: "translateY(-50%)",
-                  backgroundColor: "#FFFFFF22",
-                  WebkitMask:
-                    "url(/img/edma.svg/D.svg) no-repeat center / contain",
-                  mask: "url(/img/edma.svg/D.svg) no-repeat center / contain",
-                  animationDelay: "0.3s",
-                }}
-              />
-              <span
-                className="relative z-10 text-lg sm:text-xl md:text-2xl font-bold leading-none animate-typing"
-                style={{ marginLeft: "5rem" }}
-              >
-                Descoberta
-              </span>
-            </li>
-
-            {/* MEDICINA (M) */}
-            <li className="relative isolate flex items-center overflow-visible min-h-[56px] sm:min-h-[64px] md:min-h-[50px]">
-              <span
-                aria-hidden="true"
-                className="absolute z-0 pointer-events-none select-none animate-edma-soft"
-                style={{
-                  width: "4.5rem",
-                  height: "4.5rem",
-                  top: "50%",
-                  left: "0",
-                  transform: "translateY(-50%)",
-                  backgroundColor: "#FFFFFF22",
-                  WebkitMask:
-                    "url(/img/edma.svg/M.svg) no-repeat center / contain",
-                  mask: "url(/img/edma.svg/M.svg) no-repeat center / contain",
-                  animationDelay: "0.6s",
-                }}
-              />
-              <span className="relative z-10 text-lg sm:text-xl md:text-2xl font-bold leading-none ml-0 animate-typing">
-                Medicina
-              </span>
-            </li>
-
-            {/* AVANÇADA (A) */}
-            <li className="relative isolate flex items-center overflow-visible min-h-[56px] sm:min-h-[64px] md:min-h-[50px]">
-              <span
-                aria-hidden="true"
-                className="absolute z-0 pointer-events-none select-none animate-edma-soft"
-                style={{
-                  width: "4.5rem",
-                  height: "4.5rem",
-                  top: "50%",
-                  left: "5rem",
-                  transform: "translateY(-50%)",
-                  backgroundColor: "#FFFFFF22",
-                  WebkitMask:
-                    "url(/img/edma.svg/A.svg) no-repeat center / contain",
-                  mask: "url(/img/edma.svg/A.svg) no-repeat center / contain",
-                  animationDelay: "0.9s",
-                }}
-              />
-              <span
-                className="relative z-10 text-lg sm:text-xl md:text-2xl font-bold leading-none animate-typing"
-                style={{ marginLeft: "5rem" }}
-              >
-                Avançada
-              </span>
-            </li>
-          </ul>
-
-          {/* animação suave EDMA */}
-          <style jsx global>{`
-            @keyframes edmaSoftBounce {
-              0%,
-              100% {
-                transform: translateY(-50%);
-              }
-              50% {
-                transform: translateY(calc(-50% - 6px));
-              }
-            }
-            .animate-edma-soft {
-              animation: edmaSoftBounce 6s ease-in-out infinite;
-              will-change: transform;
-            }
-            @media (prefers-reduced-motion: reduce) {
-              .animate-edma-soft {
-                animation: none;
-              }
-            }
-          `}</style>
+        <div className="hero-panel" aria-label="Cuidado em saúde com equipe e acompanhamento">
+          <Image
+            src="/img/img_v2/consulta_img1.png"
+            alt="Médica conversa com uma paciente durante uma consulta"
+            width={1448}
+            height={1086}
+            priority
+            quality={100}
+            sizes="(max-width: 800px) 90vw, 45vw"
+            className="hero-photo"
+          />
+          <span className="hero-panel-note">Ciência • Cuidado • Pessoas</span>
         </div>
       </div>
     </section>
   );
-};
+}
 
-/* =========================
-   VÍDEO (thumbnail + player)
-   ========================= */
-const VideoSection = () => {
-  // breakpoints
-  const [isWide, setIsWide] = useState(false);   // ≥1400px
-  const [isMobile, setIsMobile] = useState(false); // <768px
-
-  // controla capa → player YouTube
-  const [showVideo, setShowVideo] = useState(false);
-
-  // ID e parâmetros do YouTube
-  const YT_ID = "uihfoL6RcA8";
-  // autoplay=1 inicia ao clicar na capa; mute=0 (som ligado) — se quiser iniciar mudo no mobile, troque para mute=1
-  const ytParams = "autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1";
-
-  useEffect(() => {
-    const onResize = () => {
-      setIsWide(window.innerWidth >= 1400);
-      setIsMobile(window.innerWidth < 768);
-    };
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const handlePlayClick = () => setShowVideo(true);
-
+function Pillars() {
   return (
-    <section className="relative w-full overflow-hidden">
-      {!showVideo ? (
-        // CAPA (thumb personalizada) — igual à sua, com botão pulando
-        <div
-          className="relative w-full cursor-pointer"
-          style={{ height: isWide ? "85vh" : "100svh" }}
-          onClick={handlePlayClick}
-        >
-          <img
-            src="/img/bkg_video.png"
-            alt="Thumb Vídeo"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-black/50 pointer-events-none rounded-xl blur-xl"></div>
-          <div className="absolute inset-0 bg-black/40" />
-
-          {/* Conteúdo da capa */}
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-4">
-            <p className="text-1xl uppercase tracking-widest mb-0">
-              Nossa missão e propósito
-            </p>
-            <h1 className="font-bold leading-snug mb-3">
-              <span className="block text-[#a07e28] text-[clamp(20px,6vw,60px)]">
-                Assista Agora
-              </span>
-            </h1>
-            <p className="mb-6 max-w-[680px] text-[clamp(12px,3.4vw,18px)] leading-relaxed">
-              Conheça um pouco mais sobre nosso trabalho e valores
-            </p>
-
-            {/* Botão Play (pulando) */}
-            <div className="flex justify-center items-center w-full">
-              <div className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-[#254337] to-[#111A17] p-[3px] group motion-safe:animate-bounce">
-                <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#728979] group-hover:bg-transparent transition-all duration-300">
-                  <div
-                    className="ml-1"
-                    style={{
-                      width: 0,
-                      height: 0,
-                      borderLeft: "14px solid #000000ff",
-                      borderTop: "9px solid transparent",
-                      borderBottom: "9px solid transparent",
-                    }}
-                  />
-                </div>
-                <span className="absolute inset-0 rounded-full bg-gradient-to-br from-green-600 to-white opacity-10 blur-xl scale-125 transition-all duration-500 ease-in-out group-hover:opacity-60 group-hover:scale-150"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        // PLAYER YOUTUBE (com controles nativos)
-        <div
-          className="relative w-full"
-          style={{
-            height: isWide ? "85vh" : "auto",
-            aspectRatio: isWide ? undefined : "16 / 9",
-          }}
-        >
-          <iframe
-            src={`https://www.youtube.com/embed/${YT_ID}?${ytParams}`}
-            title="Vídeo"
-            className="w-full h-full block"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-        </div>
-      )}
+    <section className="pillars" aria-label="Pilares do Instituto EDMA">
+      <div className="wrap">
+        <div className="pillars-intro">Nossos pilares.<br /><em>Nosso compromisso.</em></div>
+        <span className="pillar-divider" aria-hidden="true" />
+        <div className="pillar"><span className="pillar-icon">E</span>Educação</div>
+        <span className="pillar-divider" aria-hidden="true" />
+        <div className="pillar"><span className="pillar-icon">D</span>Descoberta</div>
+        <span className="pillar-divider" aria-hidden="true" />
+        <div className="pillar"><span className="pillar-icon">MA</span>Medicina avançada</div>
+      </div>
     </section>
   );
-};
+}
 
-
-/* =========================
-   GRUPOS DE CUIDADO
-   ========================= */
-const GruposCuidado = () => {
-  const grupos = [
-    {
-      icone: "/img/novas/saude_mental.svg",
-    },
-    {
-      icone: "/img/novas/controle_dor.svg",
-    },
-    {
-      icone: "/img/novas/doencas_neur.svg",
-    },
-    {
-      icone: "/img/novas/condic_fisica.svg",
-    },
-    {
-      icone: "/img/novas/condic_cron.svg",
-    },
-  ];
-
+function Services() {
   return (
-    <section
-      className="py-16 px-4 sm:px-6 lg:px-8 relative"
-      style={{
-        backgroundColor: "#111A17",
-        backgroundImage:
-          "linear-gradient(rgba(29, 85, 63, 0.45), rgba(0, 0, 0, 0.35)), url('/img/textura.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Título e subtítulo */}
-        <div className="text-center mb-12">
-          <p
-            className="text-sm uppercase text-white/70 tracking-widest mb-4"
-            style={{ color: "#F4F9F5" }}
-          >
-            ATENÇÃO ESPECIAL PARA SUA SAÚDE
-          </p>
-          <h2
-            className="text-4xl lg:text-5xl font-bold mb-4"
-            style={{ color: "#a07e28" }}
-          >
-            Tratamos saúde com foco em você
-          </h2>
+    <section className="section services-section" id="atendimentos" aria-labelledby="services-title">
+      <div className="wrap">
+        <div className="section-label">Nossas formas de cuidar</div>
+        <div className="section-head">
+          <h2 id="services-title">Um cuidado completo,<br />com foco <em>em você.</em></h2>
+          <p>Do primeiro contato ao acompanhamento, cada etapa é pensada para trazer clareza, segurança e acolhimento.</p>
         </div>
-
-        {/* Grid responsivo de ícones + rótulos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 sm:gap-10 place-items-center">
-          {grupos.map((grupo, index) => (
-            <figure
-              key={index}
-              className={`
-                group relative flex flex-col items-center text-center
-                rounded-2xl p-4
-                transition-all duration-300
-                hover:-translate-y-1
-                hover:shadow-[0_12px_30px_-6px_rgba(16,185,129,.45)]
-                ${
-                  index === grupos.length - 1
-                    ? "col-span-full sm:col-span-2 lg:col-span-1"
-                    : ""
-                }
-              `}
-            >
-              <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-44 lg:h-44 flex items-center justify-center">
-                <img src={grupo.icone} />
+        <div className="services">
+          {services.map((service) => (
+            <article className={`service-card ${service.tone}`} key={service.number}>
+              <div className="service-top">
+                <span className="service-no">{service.number}</span>
+                <span className="service-symbol">{service.icon}</span>
               </div>
-
-              <figcaption className="mt-3 text-white/90 text-sm leading-tight"></figcaption>
-            </figure>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
+              <a className="service-link" href={service.href}>{service.label}<Arrow /></a>
+            </article>
           ))}
         </div>
       </div>
     </section>
   );
-};
+}
 
-/* =========================
-   ESPECIALISTAS — carrossel mantendo o mesmo layout
-   ========================= */
-const Especialistas = () => {
-  const especialistas = [
-    {
-      nome: "Rafael Zotti Rossetto",
-      cargo: "Fisioterapeuta",
-      img: "/img/especialistas/med01.png",
-      bio: "Especialista em neurociências e Mestre em Ciências da Reabilitação pela USP. Atua com reabilitação e saúde para atletas, idosos e público geral. Fundador da ONCOMAT e criador da metodologia de tratamento ONCOMAT, focado no cuidado em saúde.",
-    },
-    {
-      nome: "Rodolfo Hellmann",
-      cargo: "Médico",
-      img: "/img/especialistas/med02.jpeg",
-      bio: "Médico pela Universidade de Marília, pós-graduado em Psiquiatria pelo Instituto Israelita Albert Einstein. Prescritor de Cannabis Medicinal desde 2020, com certificado pela WeCann Academy.",
-    },
-    {
-      nome: "Silvio Soares",
-      cargo: "Médico",
-      img: "/img/especialistas/med03.png",
-      bio: "Médico, psicólogo especialista em Terapia Cognitivo-Comportamental, Mestre em Ciências Biomédicas e doutorando em Neurologia. Integra saúde mental e biomedicina para intervenções terapêuticas inovadoras.",
-    },
-    {
-      nome: "Kamila Scherer",
-      cargo: "Enfermeira",
-      img: "/img/especialistas/med04.png",
-      bio: "Enfermeira doula, especialista em Enfermagem Obstétrica. Une técnica e prática em abordagem integrada para pacientes que utilizam medicinas naturais, promovendo autonomia e bem-estar.",
-    },
-    // 5º (fictício) para testar o carrossel
-    {
-      nome: "Beatriz Almeida",
-      cargo: "Nutricionista",
-      img: "/img/especialistas/med05.png", // coloque uma imagem ou reaproveite alguma existente
-      bio: "Nutricionista com foco em saúde integrativa e protocolos adjuntos com fitocanabinoides. Atuação em performance, sono e qualidade de vida.",
-    },
-  ];
-
-  // cálculo responsivo: 4 (≥1024), 2 (≥640), 1 (<640)
-  const getPerView = () =>
-    window.innerWidth >= 1024 ? 4 : window.innerWidth >= 640 ? 2 : 1;
-
-  const [perView, setPerView] = useState(1);
-  const [page, setPage] = useState(0);
-
-  useEffect(() => {
-    const calc = () => setPerView(getPerView());
-    calc();
-    window.addEventListener("resize", calc);
-    return () => window.removeEventListener("resize", calc);
-  }, []);
-
-  // cria páginas de perView itens (não limita a lista)
-  const pages = (() => {
-    const out = [];
-    for (let i = 0; i < especialistas.length; i += perView) {
-      out.push(especialistas.slice(i, i + perView));
-    }
-    return out;
-  })();
-
-  // sempre que o perView muda, volta para a primeira página
-  useEffect(() => setPage(0), [perView]);
-
-  const next = () => setPage((p) => (p + 1) % pages.length);
-  const prev = () => setPage((p) => (p - 1 + pages.length) % pages.length);
-
-  // card: mesma estrutura que você aprovou (foto 3:4 + textos centralizados)
-  const Card = ({ p }) => (
-    <figure className="flex flex-col items-center text-center">
-      <div className="w-[220px] sm:w-[240px] lg:w-[220px] aspect-[3/4] rounded-xl overflow-hidden shadow-md">
-        <img
-          src={p.img}
-          alt={p.nome}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+function Journey() {
+  return (
+    <section className="journey" id="como-funciona" aria-labelledby="journey-title">
+      <div className="wrap journey-grid">
+        <div className="journey-media-column">
+          <div className="journey-visual">
+          <Image
+            src="/img/tratamento/consulta_perso.jpg"
+            alt="Profissional de saúde em conversa com paciente durante uma consulta"
+            width={1024}
+            height={683}
+            quality={100}
+            sizes="(max-width: 800px) 90vw, 45vw"
+            className="journey-photo"
+          />
+          <span className="visual-wash" aria-hidden="true" />
+          <span className="visual-corner">Ciência • Cuidado • Pessoas</span>
+          <span className="visual-label">Cada jornada importa.</span>
+          </div>
+          <JourneyStatement />
+        </div>
+        <div className="journey-heading">
+          <div className="section-label">Sua jornada de cuidado</div>
+          <h2 id="journey-title">Você não precisa<br />ter todas as <em>respostas.</em></h2>
+          <p>O primeiro passo é entender suas necessidades. Nossa proposta é unir escuta, avaliação e informação para apoiar decisões conscientes sobre sua saúde.</p>
+          <div className="steps">
+            {steps.map((step) => (
+              <div className="step" key={step.number}>
+                <span className="step-num">{step.number}</span>
+                <div><h3>{step.title}</h3><p>{step.description}</p></div>
+              </div>
+            ))}
+          </div>
+          <a className="btn btn-dark" href={whatsappUrl} target="_blank" rel="noreferrer">
+            Começar minha jornada <Arrow />
+          </a>
+        </div>
       </div>
-      <figcaption className="mt-4 max-w-[18rem] mx-auto">
-        <h3 className="text-base md:text-lg font-bold text-white mb-1 font-livvic">
-          {p.nome}
-        </h3>
-        <p className="text-sm font-bold mb-2" style={{ color: "#A3DB9D" }}>
-          {p.cargo}
-        </p>
-        <p className="text-xs text-white/90 leading-relaxed font-livvic">
-          {p.bio}
-        </p>
-      </figcaption>
-    </figure>
+    </section>
   );
+}
+
+function About() {
+  return (
+    <section className="about" id="instituto" aria-labelledby="about-title">
+      <div className="wrap about-grid">
+        <div className="about-copy">
+          <div className="section-label">Conheça o Instituto EDMA</div>
+          <h2 id="about-title">A ciência é nossa raiz.<br /><em>O cuidado, nosso propósito.</em></h2>
+          <p>O Instituto EDMA nasceu do encontro entre ciência e afeto. Seu propósito é oferecer cuidado que enxerga além dos sintomas e considera a história, os medos e as possibilidades de cada pessoa. Educação, descoberta e medicina avançada fazem parte dessa visão de saúde.</p>
+          <blockquote className="about-quote">“Mais do que oferecer respostas, queremos abrir caminhos para cuidar melhor.”</blockquote>
+          <a className="btn btn-outline" href="/sobrenos">Conheça o instituto <Arrow /></a>
+        </div>
+        <div className="about-art">
+          <Image
+            src="/img/quemsomos.jpg"
+            alt="Paciente idosa conversa com uma profissional de saúde em um momento de cuidado"
+            width={6016}
+            height={4016}
+            quality={100}
+            sizes="(max-width: 800px) 90vw, 42vw"
+            className="about-photo"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section
-      className="w-full py-16 px-4 sm:px-6 lg:px-8 relative"
-      style={{
-        backgroundImage:
-          "url('/img/especialistas/cannabis-marijuana-leaf-closeup%201.png')", // espaço escapado
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="max-w-7xl mx-auto text-center relative z-10">
-        <p className="text-sm uppercase text-gray-300 tracking-widest mb-4 font-livvic">
-          A EQUIPE QUE FAZ A DIFERENÇA
-        </p>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-12 font-livvic">
-          Conheça nosso time de especialistas
-        </h2>
-
-        {/* CARROSSEL (mesmo layout de grid) */}
-        <div className="relative overflow-hidden">
-          {/* trilho: cada página ocupa 100% da largura */}
-          <div
-            className="flex transition-transform duration-500 ease-out"
-            style={{ transform: `translateX(-${page * 100}%)` }}
-          >
-            {pages.map((grupo, gi) => (
-              <div key={gi} className="flex-shrink-0 w-full">
-                {/* grid por página preservando layout: 1/2/4 colunas */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 place-items-center">
-                  {grupo.map((p, i) => (
-                    <Card key={i} p={p} />
-                  ))}
-                  {/* placeholders invisíveis para manter a malha na última página */}
-                  {grupo.length < perView &&
-                    Array.from({ length: perView - grupo.length }).map(
-                      (_, k) => (
-                        <div key={`ph-${k}`} className="opacity-0">
-                          <Card p={grupo[0]} />
-                        </div>
-                      )
-                    )}
+    <section className="faq" id="duvidas" aria-labelledby="faq-title">
+      <div className="wrap faq-grid">
+        <div className="faq-title">
+          <div className="section-label">Perguntas frequentes</div>
+          <h2 id="faq-title">Informação traz <em>tranquilidade.</em></h2>
+          <p>Algumas dúvidas comuns para tornar sua jornada mais clara desde o início.</p>
+          <a className="btn btn-outline" href={whatsappUrl} target="_blank" rel="noreferrer">Tenho outras dúvidas <Arrow /></a>
+        </div>
+        <div className="faq-list">
+          {questions.map((item, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div className={`faq-item${isOpen ? " open" : ""}`} key={item.question}>
+                <h3>
+                  <button
+                    className="faq-question"
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                  >
+                    {item.question}<span className="faq-plus" aria-hidden="true">+</span>
+                  </button>
+                </h3>
+                <div className="faq-answer" id={`faq-answer-${index}`} hidden={!isOpen}>
+                  <p>{item.answer}</p>
+                  {item.link && <a href={item.link} target="_blank" rel="noreferrer">{item.linkLabel} ↗</a>}
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Navegação */}
-          {pages.length > 1 && (
-            <>
-              <button
-                onClick={prev}
-                aria-label="Anterior"
-                className="absolute top-1/3 -translate-y-1/2 left-0 rounded-full bg-white/10 hover:bg-white/20 text-white w-9 h-9 flex items-center justify-center backdrop-blur-md"
-              >
-                ‹
-              </button>
-              <button
-                onClick={next}
-                aria-label="Próximo"
-                className="absolute top-1/3 -translate-y-1/2 right-0 rounded-full bg-white/10 hover:bg-white/20 text-white w-10 h-10 flex items-center justify-center backdrop-blur-md"
-              >
-                ›
-              </button>
-
-              <div className="mt-6 flex justify-center gap-2">
-                {pages.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setPage(i)}
-                    aria-label={`Ir para a página ${i + 1}`}
-                    className={`w-2.5 h-2.5 rounded-full transition ${
-                      page === i ? "bg-white" : "bg-white/50 hover:bg-white/70"
-                    }`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
+            );
+          })}
         </div>
       </div>
     </section>
   );
-};
+}
 
-/* =========================
-   DEPOIMENTOS (imagem menor)
-   ========================= */
-const Depoimentos = () => {
-  const testimonials = [
-    {
-      image: "/img/depoimentos/paula_ferraz.jpg",
-      name: "Paulla Ferraz",
-      role: "Mãe do Gael",
-      text:
-        "Há 6 meses incluímos o tratamento com o canabidiol na rotina do Gael (tea, nível 2 de suporte e com grande dificuldade na fala) e de lá pra cá temos tido avanços significativos. Neste período, o Gael saiu da fralda, diminuiu drasticamente as ecolalias, melhorou (e muito) a alimentação, arriscou mais palavras e hoje está começando a ser alfabetizado, com o avanço da motricidade fina. Não canso de agradecer a Dra Brunna Varela e Instituto EDMA por nos auxiliarem nesta jornada, sem eles nada disso seria possível!!! O canabidiol salva vidas e proporciona qualidade de vida aos seus pacientes. 💚",
-    },
-    {
-      image: "/img/depoimentos/cli02.jpg",
-      name: "Marcos Lima",
-      role: "Paciente",
-      text:
-        "O cuidado individual fez toda diferença. Recomendo a todos que buscam um tratamento sério e baseado em evidências.",
-    },
-    {
-      image: "/img/depoimentos/cli03.jpg",
-      name: "Luciana Prado",
-      role: "Responsável",
-      text:
-        "A equipe é muito humana. O acompanhamento contínuo trouxe segurança para nossa família durante todo o processo.",
-    },
-  ];
-
-  const [current, setCurrent] = useState(0);
-  const prevTestimonial = () =>
-    setCurrent((i) => (i - 1 + testimonials.length) % testimonials.length);
-  const nextTestimonial = () =>
-    setCurrent((i) => (i + 1) % testimonials.length);
-
+function JourneyStatement() {
   return (
-    <section
-      className="relative overflow-hidden py-16 px-4 sm:py-20"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(70,110,69,0.44), rgba(6,10,8,0.38)), url('/img/textura.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundColor: "#111",
-      }}
-    >
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Títulos */}
-        <div className="text-center mb-12 sm:mb-16">
-          <p className="text-xs sm:text-sm font-light text-white uppercase tracking-widest mb-2 sm:mb-3">
-            NOSSOS DEPOIMENTOS
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-livvic leading-tight">
-            O QUE NOSSOS CLIENTES ESTÃO DIZENDO
-          </h2>
-        </div>
-
-        {/* Carousel */}
-        <div className="relative max-w-5xl mx-auto">
-          {/* Setas: escondidas no mobile para não sobrepor o texto */}
-          <button
-            onClick={prevTestimonial}
-            aria-label="Anterior"
-            className="hidden md:block absolute -left-12 lg:-left-14 top-1/2 -translate-y-1/2 z-30 text-white hover:text-white/80 transition-colors"
-          >
-            <svg
-              className="w-10 h-10"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            onClick={nextTestimonial}
-            aria-label="Próximo"
-            className="hidden md:block absolute -right-12 lg:-right-14 top-1/2 -translate-y-1/2 z-30 text-white hover:text-white/80 transition-colors"
-          >
-            <svg
-              className="w-10 h-10"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Slide */}
-          <div className="h-auto lg:h-80 flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-12 px-2 sm:px-8 md:px-12 lg:px-16">
-            {/* Foto */}
-            <div className="flex-shrink-0">
-              <div className="w-28 h-28 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl ring-1 ring-white/10">
-                <img
-                  src={testimonials[current].image}
-                  alt={testimonials[current].name}
-                  className="w-full h-full object-cover bg-gray-100"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-
-            {/* Texto */}
-            <div className="flex-1 max-w-3xl flex flex-col justify-center w-full">
-              {/* No mobile, se o texto for muito grande, limita a altura e permite rolar.
-                  Em telas ≥ md, remove o limite (sem rolagem). */}
-              <div className="flex-1 flex items-start mb-4 sm:mb-6">
-                <p
-                  className="
-                    text-base sm:text-lg md:text-xl
-                    text-white leading-relaxed sm:leading-loose
-                    font-livvic text-left break-words
-                    max-h-60 overflow-y-auto pr-2
-                    md:max-h-none md:overflow-visible md:pr-0
-                  "
-                >
-                  {testimonials[current].text}
-                </p>
-              </div>
-              <div className="text-left">
-                <h4 className="text-lg sm:text-2xl font-bold text-white mb-0.5 sm:mb-1 font-livvic">
-                  {testimonials[current].name}
-                </h4>
-                <p className="text-white/70 font-light text-sm sm:text-lg">
-                  {testimonials[current].role}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Indicadores */}
-          <div className="flex justify-center space-x-2 sm:space-x-3 mt-8 sm:mt-12">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrent(index)}
-                aria-label={`Ir para depoimento ${index + 1}`}
-                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-colors ${
-                  index === current ? "bg-white" : "bg-white/40"
-                }`}
-              />
-            ))}
-          </div>
+    <section className="journey-closing" aria-labelledby="journey-statement-title">
+      <div className="journey-closing__content">
+        <div>
+          <div className="section-label">Estamos aqui para você</div>
+          <h2 id="journey-statement-title">O primeiro passo pode transformar<br /><em>a forma de se cuidar.</em></h2>
         </div>
       </div>
     </section>
   );
-};
-/* =========================
-   FAQ
-   ========================= */
-const FAQSection = () => {
-  const [openItems, setOpenItems] = useState({ 0: true });
+}
 
-  const faqItems = [
-    {
-      id: "cultural",
-      title: "CULTURAL",
-      questions: [
-        {
-          question: "A cannabis sempre foi usada apenas como droga recreativa?",
-          answer:
-            "Não. A planta acompanha a humanidade há milênios, com usos medicinais, religiosos e culturais em diversas civilizações. O estigma em torno da “maconha” é recente e foi reforçado por políticas de proibição.",
-        },
-        {
-          question: "Por que o nome “maconha” gera tanto preconceito?",
-          answer:
-            "Porque ele foi historicamente associado ao tráfico, à criminalização de pessoas negras e marginalizadas, criando medo e estigma. Quando falamos “cannabis medicinal”, muitas vezes a mesma planta é vista de outra forma — isso mostra que as palavras carregam construções sociais e políticas.",
-        },
-      ],
-    },
-    {
-      id: "empreendedorismo",
-      title: "EMPREENDEDORISMO",
-      questions: [
-        {
-          question: "Existe um mercado profissional em torno da cannabis?",
-          answer:
-            "Sim. O setor cresce em todo o mundo, envolvendo pesquisa científica, desenvolvimento de produtos, cultivo regulamentado e inovação tecnológica. É um campo que gera empregos, fomenta negócios e abre novas oportunidades.",
-        },
-        {
-          question: "O Instituto EDMA apoia empreendedores da área?",
-          answer:
-            "Sim. Promovemos cursos, parcerias e orientações técnicas para empresas, profissionais e associações que querem atuar de forma segura, legal e responsável no setor da cannabis medicinal.",
-        },
-      ],
-    },
-    {
-      id: "medicinal",
-      title: "MEDICINAL",
-      questions: [
-        {
-          question:
-            "Quais condições podem ser tratadas com cannabis medicinal?",
-          answer:
-            "A cannabis pode auxiliar em casos de dor crônica, epilepsia, autismo, ansiedade, depressão, insônia, Parkinson, Alzheimer, fibromialgia, esclerose múltipla, entre outras. Cada caso é avaliado individualmente.",
-        },
-        {
-          question: "O tratamento é seguro?",
-          answer:
-            "Sim, quando feito com acompanhamento profissional. O Instituto EDMA garante protocolos personalizados, ajuste de doses e acompanhamento contínuo, sempre dentro da legislação brasileira.",
-        },
-      ],
-    },
-    {
-      id: "socioambiental",
-      title: "SOCIOAMBIENTAL",
-      questions: [
-        {
-          question: "O cultivo de cannabis pode ser sustentável?",
-          answer:
-            "Sim. Com técnicas adequadas, a cannabis pode ser cultivada com baixo impacto ambiental, inclusive contribuindo para a recuperação de solos e oferecendo alternativas sustentáveis para diferentes setores.",
-        },
-        {
-          question: "O Instituto EDMA tem compromisso ambiental?",
-          answer:
-            "Sim. Valorizamos práticas responsáveis, apoiamos iniciativas sustentáveis e acreditamos que o cuidado com a saúde está ligado também ao cuidado com o planeta.",
-        },
-      ],
-    },
-    {
-      id: "plural",
-      title: "PLURAL",
-      questions: [
-        {
-          question: "O tratamento com cannabis é acessível a todos?",
-          answer:
-            "Ainda existem barreiras, mas o EDMA trabalha para democratizar o acesso, oferecendo apoio em documentação, uso compassivo (HC) e judicialização quando necessário.",
-        },
-        {
-          question: "O Instituto EDMA atende apenas pacientes?",
-          answer:
-            "Não. Também atuamos na formação de profissionais da saúde, em pesquisas científicas e na promoção de diálogos sociais, culturais e educativos para combater estigmas e ampliar o conhecimento.",
-        },
-      ],
-    },
-  ];
-
-  const toggleItem = (index) => {
-    const isOpen = !!openItems[index];
-    const next = {};
-    if (!isOpen) next[index] = true;
-    setOpenItems(next);
-  };
-
-  return (
-    <>
-      <style jsx>{`
-        .faq-section {
-          background: url("/img/textura.png") center/cover no-repeat,
-            linear-gradient(to bottom, #060706ce, #202e25ff);
-          color: #fff;
-          font-family: "Livvic", sans-serif;
-        }
-        .faq-wrap {
-          max-width: 980px;
-          margin: 0 auto;
-          padding: 48px 24px 96px;
-        }
-        .faq-eyebrow {
-          font-family: "Livvic", sans-serif;
-          font-size: clamp(28px, 4.2vw, 56px);
-          text-transform: uppercase;
-          margin: 8px 0 12px;
-        }
-        .faq-title {
-          font-family: "Livvic", sans-serif;
-          margin: 0 0 32px;
-          line-height: 1.1;
-          font-size: clamp(34px, 7.2vw, 72px);
-          font-weight: 400;
-        }
-        .faq-title .white {
-          color: #fff;
-        }
-        .faq-title .green {
-          color: #daa520;
-        }
-        .faq-accordion {
-          margin-top: 36px;
-          border-top: 2px solid #daa520;
-        }
-        .faq-item {
-          border-bottom: 2px solid #daa520;
-        }
-        .faq-trigger {
-          all: unset;
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          width: 100%;
-          padding: 18px 0;
-          cursor: pointer;
-        }
-        .faq-sign {
-          font-family: "Livvic", sans-serif;
-          font-size: clamp(22px, 3vw, 28px);
-          line-height: 1;
-          width: 28px;
-          text-align: center;
-        }
-        .faq-label {
-          font-family: "Livvic", sans-serif;
-          font-size: clamp(22px, 3.6vw, 32px);
-          font-weight: semibold;
-        }
-        .faq-panel {
-          padding: 0 0 22px 44px;
-          max-width: 72ch;
-          color: #e1f2e1;
-          display: none;
-          animation: slide 0.25s ease-out both;
-        }
-        .faq-item.open .faq-panel {
-          display: block;
-        }
-        @keyframes slide {
-          from {
-            opacity: 0;
-            transform: translateY(-4px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
-
-      <section className="faq-section">
-        <div className="faq-wrap">
-          <h2 className="faq-title">
-            <span className="white">Perguntas</span>
-            <span className="text-[#daa520]"> Frequentes</span>
-          </h2>
-
-          <section className="faq-accordion" aria-label="Categorias">
-            {faqItems.map((item, index) => {
-              const isOpen = !!openItems[index];
-              return (
-                <article
-                  key={item.id}
-                  className={`faq-item ${isOpen ? "open" : ""}`}
-                >
-                  <button
-                    className="faq-trigger"
-                    aria-expanded={isOpen}
-                    onClick={() => toggleItem(index)}
-                  >
-                    <span className="faq-sign" aria-hidden="true">
-                      {isOpen ? "−" : "+"}
-                    </span>
-                    <span className="faq-label">{item.title}</span>
-                  </button>
-
-                  {/* Adicionando perguntas e respostas dentro de cada categoria */}
-                  <div className="faq-panel">
-                    {item.questions.map((question, idx) => (
-                      <div key={idx} className="mb-4">
-                        <p className="font-semibold text-[#daa520] text-lg">
-                          {question.question}
-                        </p>
-                        <p className="text-lg">{question.answer}</p>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              );
-            })}
-          </section>
-        </div>
-      </section>
-    </>
-  );
-};
-
-/* =========================
-   PÁGINA
-   ========================= */
 export default function Home() {
   return (
-    <main className="overflow-x-hidden">
-      <HeroSection />
-      <EDMAescada />
-      <GruposCuidado />
-      <VideoSection />
-      <Especialistas />
-      <Depoimentos />
-      <FAQSection />
-    </main>
+    <div className="home-page">
+      <HomeHero />
+      <Pillars />
+      <Services />
+      <Journey />
+      <About />
+      <FAQ />
+    </div>
   );
 }

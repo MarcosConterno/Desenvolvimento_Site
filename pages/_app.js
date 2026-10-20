@@ -1,6 +1,6 @@
 import "../styles/globals.css";
+import "../styles/home.css";
 import Layout from "../components/Layout";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Head from "next/head";
 
 export default function MyApp({ Component, pageProps }) {
@@ -13,16 +13,18 @@ export default function MyApp({ Component, pageProps }) {
           sizes="any"
           type="image/svg+xml"
         ></link>
-        <title>Instituto EDMA</title>
+        <title>Instituto EDMA | Ciência que acolhe, cuidado que transforma</title>
+
+        <meta name="theme-color" content="#173a2c" />
 
         <meta
           name="description"
-          content="Cuidamos de você de uma forma única e especial!"
+          content="Saúde integrativa, orientação profissional e cuidado individualizado no Instituto EDMA."
         />
-        <meta property="og:title" content="Instituto EDMA" />
+        <meta property="og:title" content="Instituto EDMA | Ciência que acolhe, cuidado que transforma" />
         <meta
           property="og:description"
-          content="Cuidamos de você de uma forma única e especial!"
+          content="Saúde integrativa, orientação profissional e cuidado individualizado no Instituto EDMA."
         />
         <meta
           property="og:image"
