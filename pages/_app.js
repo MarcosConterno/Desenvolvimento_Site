@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import "../styles/home.css";
+import "../styles/associese.css";
 import Layout from "../components/Layout";
 import Head from "next/head";
 
